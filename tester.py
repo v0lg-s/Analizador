@@ -232,18 +232,20 @@ def run_tests(lexer_func, parser_func):
             print(ast)
             print("AST esperado:")
             print(ejemplo['salida_esperada_ast'])
-        except Exception as e:
-            print(f"Error en análisis sintáctico: {e}")
-            print("No se pudo obtener AST.")
-            print("AST esperado:")
-            print(ejemplo['salida_esperada_ast'])
-            print("Test fallido ❌")
-            continue
 
-        if ast == ejemplo['salida_esperada_ast']:
-            print("AST correcto ✔️")
-        else:
-            print("AST incorrecto ❌")
+            if ejemplo['salida_esperada_ast'] is None:
+                print("Se esperaba un error pero no ocurrió ❌")
+            elif ast == ejemplo['salida_esperada_ast']:
+                print("AST correcto ✔️")
+            else:
+                print("AST incorrecto ❌")
+
+        except Exception as e:
+            if ejemplo['salida_esperada_ast'] is None:
+                print(f"Se esperaba un error y ocurrió correctamente ✔️\nMensaje de error: {e}")
+            else:
+                print(f"Error inesperado en análisis sintáctico: {e}")
+                print("Test fallido ❌")
 
 
 
